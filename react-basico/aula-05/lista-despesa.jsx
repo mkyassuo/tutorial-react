@@ -1,5 +1,7 @@
 import React from 'react';
 import EditorDespesa from './editor-despesa.jsx';
+import Label from 'react-bootstrap/lib/Label';
+import Button from 'react-bootstrap/lib/Button';
 
 class ListaDespesa extends React.Component{
 
@@ -75,22 +77,45 @@ class ListaDespesa extends React.Component{
       return(
 
         <div>
-        <ul>
+				<div className='row'>
+					<Label className='col-md-2 col-xs-12'>Todas as Despesas</Label>
+				</div>
+				<br />
+        <div className='container-fluid'>
+					<div className='row'>
+						<Label className='col-md-2 col-xs-12'>Item</Label>
+						<Label className='col-md-2 col-xs-12'>Alterar</Label>
+						<Label className='col-md-2 col-xs-12'>Remover</Label>
+					</div>
+					<div>
 					{this.props.despesas.map((item, index) =>{
 
 						if (index == this.state.despesaEditandoIndex){
-							return <li key={index}>
+							return <div key={index} className='row'>
 									<EditorDespesa descricao={this.props.despesas[index].descricao} valor={this.props.despesas[index].valor} index={index} onAlterar={(index, despesaEditando) => this._onClickSalvar(index, despesaEditando)} onCancelar={() => this._cancelarEdicao()}></EditorDespesa>
-							</li>
+							</div>
 						}
-						return <li key={index}>
-							<button onClick={() => this._onClickRemover(index)}>Remover</button>
-							<button onClick={() => this._editarDespesa(index)}>Alterar</button>
-							<span>{`${item.descricao} - ${item.valor}`}</span>
-						</li>
+						return <div key={index} className='row'>
+							<span className= 'col-md-2 col-xs-12'>{`${item.descricao} - ${item.valor}`}</span>
+							<Button className= 'col-md-2 col-xs-12' onClick={() => this._onClickRemover(index)}>Remover</Button>
+							<Button className= 'col-md-2 col-xs-12' onClick={() => this._editarDespesa(index)}>Alterar</Button>
+						</div>
 					})}
-				</ul>
-				<strong>{`Valor total gasto é ${total}`}</strong>
+					</div>
+				</div>
+				<br/>
+				<br/>
+				<br/>
+				<div className='row'>
+				<Label bsSize="large">Valor total gasto é</Label>{
+				//if (total == 0){
+					<Label bsSize="large" bsStyle="success"><strong>{` ${total}`}</strong></Label>
+				//}
+			//	else {
+			//		return <Label bsSize="large" bsStyle="danger"><strong>{` ${total}`}</strong></Label>
+			//	}
+				}
+				</div>
         </div>
       )
   }

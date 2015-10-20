@@ -27,6 +27,8 @@ class EditorDespesa extends React.Component{
      })
   }
 
+
+
 	_onClickCancelar(){
 		 if (!this.props.onCancelar)
 			{
@@ -64,14 +66,14 @@ class EditorDespesa extends React.Component{
 
   render(){
       return(
-
-        <div className='row'>
-          <input className='col-md-5 col-xs-12'
+				<div>
+				<div className='row'>
+          <input className='col-md-2 col-xs-12'
             value={this.state.descricao}
             onChange={(e) => this._onChangeDescricao(e)}
             type="text" placeholder="digite aqui o nome da despesa"/>
 
-          <input className='col-md-5 col-xs-12'
+          <input className='col-md-2 col-xs-12'
             value={this.state.valor}
             onChange={(e) => this._onChangeValor(e)}
             type="text" placeholder="$$$$$"/>
@@ -96,6 +98,7 @@ class EditorDespesa extends React.Component{
           }
 
           </div>
+					</div>
       )
   }
 
