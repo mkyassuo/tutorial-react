@@ -58,7 +58,7 @@ class EditorDespesa extends React.Component{
   }
 
   _onChangeValor(e){
-    if (!/^[0-9]*$/.test(e.target.value)){
+    if (!/^[+-]?[0-9]*$/.test(e.target.value)){
       return;
     }
     this.setState({valor: e.target.value})
@@ -83,7 +83,7 @@ class EditorDespesa extends React.Component{
               ?
                 <Button
                   disabled={this.state.descricao.length == 0 ||
-                    parseInt(this.state.valor) <= 0}
+                    this.state.valor.length == 0}
                   onClick={() => this._onClickIncluir()}
                   >Incluir</Button>
               :

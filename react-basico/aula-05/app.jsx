@@ -3,6 +3,7 @@ import EditorDespesa from './editor-despesa.jsx'
 import ListaDespesa from './lista-despesa.jsx'
 import Panel from 'react-bootstrap/lib/Panel';
 import Label from 'react-bootstrap/lib/Label';
+import Button from 'react-bootstrap/lib/Button';
 
 class App04 extends React.Component{
 
@@ -47,11 +48,11 @@ class App04 extends React.Component{
 			<Panel header={'Aula React'} bsStyle="primary">
 				<div className='container-fluid'>
 				<div className='row'>
-					<Label className='col-md-2 col-xs-12'>Despesas</Label>
+					<Label className='col-md-2 col-xs-12'>Item</Label>
 				</div>
 				<br />
 				<EditorDespesa onIncluir={(descricao, valor) => this._incluirDespesa(descricao,valor)}></EditorDespesa>
-				<br/>
+			 <br/>
 				<ListaDespesa despesas={this.state.lista}
 											onRemoverDespesa={(index) => this._removerDespesa(index)}
 											onSalvarDespesa={(index, despesaEditando) => this._salvarEdicao(index, despesaEditando)} >

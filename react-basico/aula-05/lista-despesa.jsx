@@ -1,24 +1,47 @@
 import React from 'react';
 import EditorDespesa from './editor-despesa.jsx';
 import Label from 'react-bootstrap/lib/Label';
-import Button from 'react-bootstrap/lib/Button';
+import Button from 'react-bootstrap/lib/Button'
+import Modal from 'react-bootstrap/lib/Modal';
 
 class ListaDespesa extends React.Component{
 
 	constructor(){
 		super();
 		this.state = {
+			index: null,
+			showModal: false,
 			despesaEditando: null,
 			despesaEditandoIndex: null
 		}
 	}
 
-	_onClickRemover(index)	{
+	_onClickRemover(index, excluir)	{
 		if (!this.props.onRemoverDespesa)
 		{
 			return
 		}
-		this.props.onRemoverDespesa(index);
+		if (!this.state.showModal)
+		{
+			this.setState({
+				showModal: true,
+				index: index
+			})
+			return
+		}
+		if (excluir){
+			this.props.onRemoverDespesa(this.state.index);
+		}
+		this.setState({
+			showModal: false,
+			index: null
+		})		
+	}
+
+	_closeModal(){
+		this.setState({
+			showModal: false
+		})
 	}
 
 	_onClickSalvar(index, despesaEditando)	{
@@ -66,10 +89,6 @@ class ListaDespesa extends React.Component{
 		});
 	}
 
-	_alterarDespesa(descricao, valor, index){
-
-	}
-
   render(){
       var total = this.props.despesas.reduce(function(xpto, item){
         return  xpto + parseInt(item.valor)
@@ -77,13 +96,26 @@ class ListaDespesa extends React.Component{
       return(
 
         <div>
+					<Modal show={this.state.showModal} onHide={() => this._closeModal()}>
+					  <Modal.Header closeButton>
+					    <Modal.Title>Excluir Item</Modal.Title>
+					  </Modal.Header>
+					  <Modal.Body>
+					    <p>Voce tem certeza que deseja excluir este item?</p>
+					  </Modal.Body>
+					  <Modal.Footer>
+					    <Button onClick={()=>this._onClickRemover(this.state.index,true)}>Sim</Button>
+							<Button onClick={()=>this._onClickRemover(this.state.index,false)}>Não</Button>
+					  </Modal.Footer>
+					</Modal>
 				<div className='row'>
-					<Label className='col-md-2 col-xs-12'>Todas as Despesas</Label>
+					<Label className='col-md-2 col-xs-12'>Todos os Itens</Label>
 				</div>
 				<br />
         <div className='container-fluid'>
 					<div className='row'>
 						<Label className='col-md-2 col-xs-12'>Item</Label>
+						<Label className='col-md-2 col-xs-12'>Valor</Label>
 						<Label className='col-md-2 col-xs-12'>Alterar</Label>
 						<Label className='col-md-2 col-xs-12'>Remover</Label>
 					</div>
@@ -96,7 +128,8 @@ class ListaDespesa extends React.Component{
 							</div>
 						}
 						return <div key={index} className='row'>
-							<span className= 'col-md-2 col-xs-12'>{`${item.descricao} - ${item.valor}`}</span>
+							<span className= 'col-md-2 col-xs-12'>{`${item.descricao}`}</span>
+							<span className= 'col-md-2 col-xs-12'>{`${item.valor}`}</span>
 							<Button className= 'col-md-2 col-xs-12' onClick={() => this._onClickRemover(index)}>Remover</Button>
 							<Button className= 'col-md-2 col-xs-12' onClick={() => this._editarDespesa(index)}>Alterar</Button>
 						</div>
@@ -107,14 +140,8 @@ class ListaDespesa extends React.Component{
 				<br/>
 				<br/>
 				<div className='row'>
-				<Label bsSize="large">Valor total gasto é</Label>{
-				//if (total == 0){
-					<Label bsSize="large" bsStyle="success"><strong>{` ${total}`}</strong></Label>
-				//}
-			//	else {
-			//		return <Label bsSize="large" bsStyle="danger"><strong>{` ${total}`}</strong></Label>
-			//	}
-				}
+				<Label bsSize="large">Valor total gasto é </Label>
+				{total >= 0 ?  <Label bsSize="large" bsStyle="success"><strong>{` ${total}`}</strong></Label> :  <Label bsSize="large" bsStyle="danger"><strong>{` ${total}`}</strong></Label>}
 				</div>
         </div>
       )
